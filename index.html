@@ -1,0 +1,615 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bank Statement to Excel</title>
+<style>
+:root{
+  --bg:#f4f5f2; --card:#ffffff; --ink:#1d2421; --muted:#66706b; --line:#dfe3df;
+  --accent:#1f6f4a; --accent-ink:#ffffff; --soft:#e8f2ec; --warn:#a15c00; --warnbg:#fff4e0;
+  --bad:#b3261e; --chk:#7a3e9d; --dep:#1f6f4a;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#141816; --card:#1c2120; --ink:#e7ece9; --muted:#9aa49f; --line:#2e3532;
+    --accent:#4fb683; --accent-ink:#0c1410; --soft:#1e2e26; --warn:#f0b35a; --warnbg:#2e2615;
+    --bad:#ff8a80; --chk:#c79be0; --dep:#6fd29f;
+  }
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:1100px;margin:0 auto;padding:24px 16px 60px}
+h1{font-size:24px;margin:0 0 4px;letter-spacing:-.01em}
+.sub{color:var(--muted);margin:0 0 20px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media (max-width:820px){.grid{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px}
+.card h2{font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:0 0 12px;font-weight:600}
+.stats{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:16px}
+.stat{flex:1;min-width:200px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.stat .n{font-size:34px;font-weight:700;line-height:1}
+.stat .l{color:var(--muted);font-size:13px;margin-top:4px}
+.stat .months{font-size:15px;font-weight:600;margin-top:2px}
+textarea{width:100%;min-height:150px;border:1px dashed var(--line);border-radius:10px;padding:10px;background:var(--bg);color:var(--ink);font:13px/1.4 ui-monospace,Menlo,Consolas,monospace;resize:vertical}
+textarea.drag{border-color:var(--accent);background:var(--soft)}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:10px}
+button,.btn{appearance:none;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:8px;padding:8px 14px;font:inherit;font-weight:600;cursor:pointer}
+button.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+button.danger{color:var(--bad)}
+button:disabled{opacity:.45;cursor:not-allowed}
+.hint{color:var(--muted);font-size:13px}
+.msg{margin-top:10px;font-size:14px;padding:8px 10px;border-radius:8px;display:none}
+.msg.show{display:block}
+.msg.ok{background:var(--soft);color:var(--accent)}
+.msg.err{background:var(--warnbg);color:var(--warn)}
+.list{display:flex;flex-direction:column;gap:8px;max-height:340px;overflow:auto}
+.item{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--line);border-radius:10px;padding:10px}
+.item .num{font-weight:700;min-width:34px;color:var(--muted)}
+.item .body{flex:1;min-width:0}
+.item .title{font-weight:600}
+.item .meta{color:var(--muted);font-size:13px}
+.item .x{border:none;background:none;color:var(--muted);padding:2px 6px;font-size:18px;line-height:1}
+.tag{display:inline-block;font-size:12px;font-weight:700;padding:1px 8px;border-radius:99px;margin-right:4px;border:1px solid currentColor}
+.tag.checks{color:var(--chk)} .tag.deposits{color:var(--dep)}
+.tag.dup{color:var(--warn)}
+.empty{color:var(--muted);font-size:14px;padding:8px 0}
+table.mo{width:100%;border-collapse:collapse;font-size:14px}
+table.mo th,table.mo td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--line)}
+table.mo td.c{text-align:center}
+.yes{color:var(--accent);font-weight:700} .no{color:var(--muted)}
+.tabs{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap}
+.tabs button{font-weight:600}
+.tabs button.on{background:var(--soft);border-color:var(--accent);color:var(--accent)}
+.prev{overflow:auto;max-height:460px;border:1px solid var(--line);border-radius:10px}
+.prev table{border-collapse:collapse;width:100%;font-size:13px;font-family:Arial,sans-serif}
+.prev th{position:sticky;top:0;background:var(--soft);text-align:center;padding:6px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
+.prev td{padding:5px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
+.prev td.amt{text-align:right;font-variant-numeric:tabular-nums}
+.prev tr.total td{font-weight:700;background:var(--bg)}
+.fname{display:flex;align-items:center;border:1px solid var(--line);border-radius:8px;overflow:hidden;flex:1;min-width:240px;background:var(--bg)}
+.fname input{flex:1;border:none;padding:9px 10px;font:inherit;background:transparent;color:var(--ink);min-width:0;outline:none}
+.fname span{padding:0 10px;color:var(--muted)}
+.full{grid-column:1/-1}
+.warns{font-size:13px;color:var(--warn);margin-top:8px;white-space:pre-wrap}
+.top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
+.top .danger{margin-top:4px}
+.save{margin-bottom:16px;border-color:var(--accent)}
+.fold{font-weight:600;padding:4px 10px;border-radius:8px;background:var(--soft);color:var(--accent);max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fold.none{background:var(--bg);color:var(--muted)}
+button.primary.done{background:#2e9d63;border-color:#2e9d63}
+.toasts{position:fixed;right:16px;bottom:16px;z-index:100;display:flex;flex-direction:column;gap:10px;width:min(380px,calc(100vw - 32px));pointer-events:none}
+.toast{pointer-events:auto;position:relative;overflow:hidden;display:flex;gap:12px;align-items:flex-start;background:var(--card);color:var(--ink);border:1px solid var(--line);border-left:5px solid var(--accent);border-radius:12px;padding:12px 12px 14px;box-shadow:0 10px 30px rgba(0,0,0,.18);animation:tin .28s cubic-bezier(.2,.8,.2,1)}
+.toast.err{border-left-color:var(--bad)} .toast.info{border-left-color:var(--muted)}
+.toast .ic{flex:none;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:14px;background:var(--accent);color:var(--accent-ink)}
+.toast.err .ic{background:var(--bad);color:#fff} .toast.info .ic{background:var(--muted);color:var(--card)}
+.toast .tx{flex:1;min-width:0;font-size:14px}
+.toast .tx b{display:block;margin-bottom:2px}
+.toast .tx span{display:block;color:var(--muted);white-space:pre-line;word-break:break-word}
+.toast .tc{flex:none;border:none;background:none;color:var(--muted);font-size:20px;line-height:1;padding:0 4px}
+.toast .bar{position:absolute;left:0;bottom:0;height:3px;width:100%;background:var(--accent);opacity:.5;transform-origin:left;animation:tbar linear forwards}
+.toast.err .bar{background:var(--bad)} .toast.info .bar{background:var(--muted)}
+.toast.hold .bar{animation-play-state:paused}
+.toast.out{animation:tout .25s ease forwards}
+@keyframes tin{from{opacity:0;transform:translateY(16px) scale(.97)}to{opacity:1;transform:none}}
+@keyframes tout{to{opacity:0;transform:translateX(24px)}}
+@keyframes tbar{from{transform:scaleX(1)}to{transform:scaleX(0)}}
+.dlg-back{position:fixed;inset:0;z-index:200;background:rgba(10,14,12,.45);display:grid;place-items:center;padding:16px;animation:dfade .12s ease}
+.dlg-back.out{animation:dfade .12s ease reverse forwards}
+.dlg{background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:14px;padding:20px;width:min(400px,100%);box-shadow:0 20px 50px rgba(0,0,0,.3);animation:dpop .14s cubic-bezier(.2,.8,.2,1)}
+.dlg h3{margin:0 0 6px;font-size:17px}
+.dlg p{margin:0;color:var(--muted);font-size:14px}
+.dlg-btns{display:flex;justify-content:flex-end;gap:8px;margin-top:18px}
+.dlg-btns .red{background:var(--bad);border-color:var(--bad);color:#fff}
+@keyframes dfade{from{opacity:0}to{opacity:1}}
+@keyframes dpop{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.dlg,.dlg-back,.dlg-back.out{animation:none}.toast,.toast.out{animation:none}.toast .bar{display:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div>
+      <h1>Bank Statement → Excel</h1>
+      <p class="sub">Paste each Checks or Deposits block below. Everything stays on this computer and works offline.</p>
+    </div>
+    <button class="danger" id="clearBtn">Clear all pastes</button>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="n" id="pasteCount">0</div><div class="l">pastes so far</div></div>
+    <div class="stat"><div class="l">Months pasted</div><div class="months" id="monthSummary">None yet</div></div>
+  </div>
+
+  <div class="card save">
+    <h2>Save Excel file</h2>
+    <div class="row" style="margin-top:0">
+      <div class="fname"><input id="fname" placeholder="Bank statement name"><span>.xlsx</span></div>
+      <button class="primary" id="dlBtn">Save Excel</button>
+    </div>
+    <div class="row folder">
+      <span class="hint">Save to:</span>
+      <span class="fold" id="folderName">No folder chosen yet</span>
+      <button id="changeFolder">Change location</button>
+    </div>
+    <p class="hint" style="margin:8px 0 0" id="saveHint">You'll be asked to pick a folder the first time you save. After that, files go there automatically.</p>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <h2>Paste here</h2>
+      <textarea id="input" placeholder="Paste a block starting with&#10;Date,Payee,...   or   Date,Received From,...&#10;&#10;It's added automatically when you paste. You can also drop a .txt file here."></textarea>
+      <div class="row">
+        <button class="primary" id="addBtn">Add paste</button>
+        <label class="btn" for="fileIn">Open .txt file</label>
+        <input type="file" id="fileIn" accept=".txt,.csv,text/plain" multiple hidden>
+        <label class="hint"><input type="checkbox" id="autoAdd" checked> Add automatically on paste</label>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Your pastes</h2>
+      <div class="list" id="pasteList"></div>
+    </div>
+
+    <div class="card full">
+      <h2>Months overview</h2>
+      <div id="monthTable"></div>
+    </div>
+
+    <div class="card full">
+      <h2>Preview</h2>
+      <div class="tabs" id="tabs"></div>
+      <div class="prev" id="preview"></div>
+      <div class="warns" id="warns"></div>
+    </div>
+  </div>
+</div>
+
+<div class="toasts" id="toasts" aria-live="polite"></div>
+<script>
+/* ===================== Core logic (port of bankStatement.py) ===================== */
+const CHECKS_HEADER = /^\s*date\s*,\s*payee/i;
+const DEPOSITS_HEADER = /^\s*date\s*,\s*received\s+from/i;
+const MONTH_NAMES = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+
+function splitBlocks(text){
+  const blocks = []; let curType = null, cur = [];
+  for (const raw of text.split(/\r\n|\r|\n/)){
+    const isC = CHECKS_HEADER.test(raw), isD = DEPOSITS_HEADER.test(raw);
+    if (isC || isD){
+      if (curType && cur.length) blocks.push({type:curType, lines:cur});
+      curType = isC ? "checks" : "deposits"; cur = [raw]; continue;
+    }
+    if (curType) cur.push(raw);
+  }
+  if (curType && cur.length) blocks.push({type:curType, lines:cur});
+  return blocks;
+}
+
+function parseCsvLine(line){
+  const out = []; let f = "", q = false;
+  for (let i = 0; i < line.length; i++){
+    const c = line[i];
+    if (q){
+      if (c === '"'){ if (line[i+1] === '"'){ f += '"'; i++; } else q = false; }
+      else f += c;
+    } else if (c === '"') q = true;
+    else if (c === ",") { out.push(f); f = ""; }
+    else f += c;
+  }
+  out.push(f);
+  return out;
+}
+
+function parseBlock(lines, warn){
+  const ls = lines.filter(l => l.trim());
+  if (!ls.length) return {header:[], rows:[]};
+  const rows = ls.map(parseCsvLine);
+  const header = rows[0].map(v => v.trim());
+  const n = header.length, tail = 3, good = [];
+  for (const row of rows.slice(1)){
+    if (!row.some(v => v.trim())) continue;
+    if (row.length === n){ good.push(row); continue; }
+    if (row.length > n){
+      const mid = row.slice(1, row.length - tail), target = n - 1 - tail;
+      if (row.length <= tail || target <= 0){ warn("Skipped malformed row: " + row.join(",")); continue; }
+      const merged = target === 1 ? [mid.join(",")] : mid.slice(0, target-1).concat([mid.slice(target-1).join(",")]);
+      const fixed = [row[0]].concat(merged, row.slice(-tail));
+      if (fixed.length === n) good.push(fixed); else warn("Could not repair row: " + row.join(","));
+      continue;
+    }
+    warn("Skipped row with too few columns: " + row.join(","));
+  }
+  return {header, rows:good};
+}
+
+function combine(blocks, type, warn){
+  const header = []; const recs = [];
+  for (const b of blocks){
+    if (b.type !== type) continue;
+    const t = parseBlock(b.lines, warn);
+    t.header.forEach(h => { if (!header.includes(h)) header.push(h); });
+    t.rows.forEach(r => { const o = {}; t.header.forEach((h,i) => o[h] = r[i]); recs.push(o); });
+  }
+  return {header, rows: recs.map(o => header.map(h => o[h] === undefined ? "" : o[h]))};
+}
+
+function parseDate(s){
+  const m = /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/.exec(String(s).trim());
+  if (!m) return null;
+  const mo = +m[1], d = +m[2], y = +m[3];
+  const dt = new Date(y, mo-1, d);
+  if (dt.getMonth() !== mo-1 || dt.getDate() !== d) return null;
+  return {y, mo, t: dt.getTime()};
+}
+
+function sortByDate(t){
+  const di = t.header.indexOf("Date");
+  if (di < 0) return t;
+  const keyed = t.rows.map((r,i) => ({r, i, d: parseDate(r[di])}));
+  keyed.sort((a,b) => {
+    if (a.d && b.d) return (a.d.t - b.d.t) || (a.i - b.i);
+    if (a.d) return -1; if (b.d) return 1; return a.i - b.i;
+  });
+  return {header:t.header, rows: keyed.map(k => k.r)};
+}
+
+function toNumber(s){
+  const v = String(s).trim().replace(/[$,\s]/g, "");
+  if (/^\(\d+(\.\d+)?\)$/.test(v)) return -parseFloat(v.slice(1,-1));
+  return /^-?\d+(\.\d+)?$/.test(v) ? parseFloat(v) : null;
+}
+
+/* ===================== XLSX writer (no libraries, works offline) ===================== */
+function colLetter(i){ let s = ""; i++; while (i > 0){ const m = (i-1) % 26; s = String.fromCharCode(65+m) + s; i = Math.floor((i-1)/26); } return s; }
+function esc(s){ return String(s).replace(/[\x00-\x08\x0B\x0C\x0E-\x1F]/g,"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+
+function sheetXml(t){
+  const ai = t.header.indexOf("Amount");
+  const cols = t.header.map((h,c) => {
+    let mx = h.length; t.rows.forEach(r => mx = Math.max(mx, String(r[c]).length));
+    return `<col min="${c+1}" max="${c+1}" width="${Math.min(mx+3,45)}" customWidth="1"/>`;
+  }).join("");
+  const str = (ref, v, s) => `<c r="${ref}" t="inlineStr" s="${s}"><is><t xml:space="preserve">${esc(v)}</t></is></c>`;
+  let data = `<row r="1">` + t.header.map((h,c) => str(colLetter(c)+"1", h, 1)).join("") + `</row>`;
+  t.rows.forEach((r, ri) => {
+    const rn = ri + 2; let cells = "";
+    r.forEach((v, c) => {
+      if (v === "" || v == null) return;
+      const ref = colLetter(c) + rn;
+      if (c === ai){ const n = toNumber(v); cells += n === null ? str(ref, v, 3) : `<c r="${ref}" s="3"><v>${n}</v></c>`; }
+      else cells += str(ref, v, 2);
+    });
+    data += `<row r="${rn}">${cells}</row>`;
+  });
+  return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><sheetViews><sheetView workbookViewId="0"><pane ySplit="1" topLeftCell="A2" activePane="bottomLeft" state="frozen"/><selection pane="bottomLeft" activeCell="A2" sqref="A2"/></sheetView></sheetViews><sheetFormatPr defaultRowHeight="15"/><cols>${cols}</cols><sheetData>${data}</sheetData></worksheet>`;
+}
+
+const STYLES = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><numFmts count="1"><numFmt numFmtId="164" formatCode="#,##0.00"/></numFmts><fonts count="2"><font><sz val="11"/><name val="Arial"/></font><font><b/><sz val="11"/><name val="Arial"/></font></fonts><fills count="2"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill></fills><borders count="1"><border><left/><right/><top/><bottom/><diagonal/></border></borders><cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs><cellXfs count="4"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/><xf numFmtId="0" fontId="1" fillId="0" borderId="0" xfId="0" applyFont="1" applyAlignment="1"><alignment horizontal="center"/></xf><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0" applyFont="1"/><xf numFmtId="164" fontId="0" fillId="0" borderId="0" xfId="0" applyFont="1" applyNumberFormat="1"/></cellXfs><cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>`;
+
+function buildXlsx(sheets){ // sheets: [{name, table}]
+  const files = [];
+  const ct = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/>${sheets.map((s,i)=>`<Override PartName="/xl/worksheets/sheet${i+1}.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>`).join("")}</Types>`;
+  files.push(["[Content_Types].xml", ct]);
+  files.push(["_rels/.rels", `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>`]);
+  files.push(["xl/workbook.xml", `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets>${sheets.map((s,i)=>`<sheet name="${esc(s.name)}" sheetId="${i+1}" r:id="rId${i+1}"/>`).join("")}</sheets></workbook>`]);
+  files.push(["xl/_rels/workbook.xml.rels", `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">${sheets.map((s,i)=>`<Relationship Id="rId${i+1}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet${i+1}.xml"/>`).join("")}<Relationship Id="rId${sheets.length+1}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>`]);
+  files.push(["xl/styles.xml", STYLES]);
+  sheets.forEach((s,i) => files.push([`xl/worksheets/sheet${i+1}.xml`, sheetXml(s.table)]));
+  return zipStore(files);
+}
+
+const CRC_TABLE = (() => { const t = new Uint32Array(256); for (let n=0;n<256;n++){ let c=n; for (let k=0;k<8;k++) c = c&1 ? 0xEDB88320^(c>>>1) : c>>>1; t[n]=c>>>0; } return t; })();
+function crc32(b){ let c = 0xFFFFFFFF; for (let i=0;i<b.length;i++) c = CRC_TABLE[(c^b[i])&0xFF]^(c>>>8); return (c^0xFFFFFFFF)>>>0; }
+
+function zipStore(files){
+  const enc = new TextEncoder(), parts = [], central = []; let off = 0;
+  const d = new Date();
+  const time = (d.getHours()<<11)|(d.getMinutes()<<5)|(d.getSeconds()>>1);
+  const date = ((d.getFullYear()-1980)<<9)|((d.getMonth()+1)<<5)|d.getDate();
+  for (const [name, content] of files){
+    const nb = enc.encode(name), data = enc.encode(content), crc = crc32(data);
+    const lh = new DataView(new ArrayBuffer(30));
+    lh.setUint32(0,0x04034b50,true); lh.setUint16(4,20,true); lh.setUint16(6,0x0800,true); lh.setUint16(8,0,true);
+    lh.setUint16(10,time,true); lh.setUint16(12,date,true); lh.setUint32(14,crc,true);
+    lh.setUint32(18,data.length,true); lh.setUint32(22,data.length,true); lh.setUint16(26,nb.length,true); lh.setUint16(28,0,true);
+    parts.push(new Uint8Array(lh.buffer), nb, data);
+    const ch = new DataView(new ArrayBuffer(46));
+    ch.setUint32(0,0x02014b50,true); ch.setUint16(4,20,true); ch.setUint16(6,20,true); ch.setUint16(8,0x0800,true); ch.setUint16(10,0,true);
+    ch.setUint16(12,time,true); ch.setUint16(14,date,true); ch.setUint32(16,crc,true);
+    ch.setUint32(20,data.length,true); ch.setUint32(24,data.length,true); ch.setUint16(28,nb.length,true);
+    ch.setUint32(42,off,true);
+    central.push(new Uint8Array(ch.buffer), nb);
+    off += 30 + nb.length + data.length;
+  }
+  const cdSize = central.reduce((a,b)=>a+b.length,0);
+  const end = new DataView(new ArrayBuffer(22));
+  end.setUint32(0,0x06054b50,true); end.setUint16(8,files.length,true); end.setUint16(10,files.length,true);
+  end.setUint32(12,cdSize,true); end.setUint32(16,off,true);
+  const all = parts.concat(central, [new Uint8Array(end.buffer)]);
+  const out = new Uint8Array(all.reduce((a,b)=>a+b.length,0)); let p = 0;
+  for (const a of all){ out.set(a,p); p += a.length; }
+  return out;
+}
+
+/* Build both sheets from all pastes */
+function buildTables(texts){
+  const warnings = [], warn = m => warnings.push(m);
+  const blocks = splitBlocks(texts.join("\n"));
+  const checks = sortByDate(combine(blocks, "checks", warn));
+  const deposits = sortByDate(combine(blocks, "deposits", warn));
+  return {checks, deposits, warnings};
+}
+
+/* Look at one paste: what type, which months, how many rows */
+function analyzePaste(text){
+  const blocks = splitBlocks(text), info = [];
+  for (const b of blocks){
+    const t = parseBlock(b.lines, () => {});
+    const di = t.header.indexOf("Date"), ai = t.header.indexOf("Amount");
+    const months = new Set(); let total = 0;
+    t.rows.forEach(r => {
+      const d = di >= 0 ? parseDate(r[di]) : null;
+      if (d) months.add(d.y + "-" + String(d.mo).padStart(2,"0"));
+      if (ai >= 0){ const n = toNumber(r[ai]); if (n !== null) total += n; }
+    });
+    info.push({type:b.type, rows:t.rows.length, months:[...months].sort(), total});
+  }
+  return info;
+}
+function monthLabel(key){ const [y,m] = key.split("-"); return `${MONTH_NAMES[+m-1]} ${y} (month ${+m})`; }
+function monthShort(key){ const [y,m] = key.split("-"); return `${MONTH_NAMES[+m-1].slice(0,3)} ${y}`; }
+
+/* ===================== UI ===================== */
+if (typeof document !== "undefined") (function(){
+  const KEY = "bankStmtToExcel_v1";
+  let state = {pastes:[], fname:"", tab:"checks"};
+  try { const s = JSON.parse(localStorage.getItem(KEY)); if (s && Array.isArray(s.pastes)) state = Object.assign(state, s); } catch(e){}
+  const save = () => { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch(e){} };
+
+  const $ = id => document.getElementById(id);
+  const input = $("input");
+  const fmt = n => n.toLocaleString("en-US",{minimumFractionDigits:2, maximumFractionDigits:2});
+  const typeName = t => t === "checks" ? "Checks & Withdrawals" : "Deposits & Sales";
+  const h = s => esc(s);
+
+  /* ---- Toast notifications ---- */
+  const ICONS = {ok:"✓", err:"!", info:"i"};
+  function toast(title, text, kind = "ok", ms){
+    const box = $("toasts"), el = document.createElement("div");
+    el.className = "toast " + kind;
+    el.setAttribute("role", kind === "err" ? "alert" : "status");
+    el.innerHTML = `<div class="ic">${ICONS[kind]}</div><div class="tx"><b>${h(title)}</b>${text ? `<span>${h(text)}</span>` : ""}</div><button class="tc" aria-label="Close">×</button><div class="bar"></div>`;
+    const life = ms || (kind === "err" ? 3500 : 2000);
+    el.querySelector(".bar").style.animationDuration = life + "ms";
+    let gone = false;
+    const close = () => { if (gone) return; gone = true; el.classList.add("out"); setTimeout(() => el.remove(), 250); };
+    el.querySelector(".tc").onclick = close;
+    let timer = setTimeout(close, life);
+    el.onmouseenter = () => { clearTimeout(timer); el.classList.add("hold"); };
+    el.onmouseleave = () => { el.classList.remove("hold"); timer = setTimeout(close, 1000); };
+    box.appendChild(el);
+    while (box.children.length > 4) box.firstElementChild.remove();
+  }
+  function flash(text, ok){ toast(ok ? "Done" : "Heads up", text, ok ? "ok" : "err"); }
+
+  function addPaste(text){
+    if (!text.trim()) return;
+    const info = analyzePaste(text);
+    if (!info.length){ toast("Paste not added", "The text needs a header row starting with Date,Payee or Date,Received From.", "err"); return; }
+    state.pastes.push({text, at:Date.now()});
+    save(); render();
+    const n = state.pastes.length;
+    const desc = info.map(i => `${typeName(i.type)} · ${i.months.length ? i.months.map(monthLabel).join(", ") : "unknown month"} · ${i.rows} rows`).join("\n");
+    toast(`Paste #${n} added`, desc, "ok");
+  }
+
+  input.addEventListener("paste", () => {
+    if (!$("autoAdd").checked) return;
+    setTimeout(() => { const t = input.value; input.value = ""; addPaste(t); }, 0);
+  });
+  $("addBtn").onclick = () => { const t = input.value; input.value = ""; addPaste(t); };
+  $("fileIn").onchange = async e => { for (const f of e.target.files) addPaste(await f.text()); e.target.value = ""; };
+  input.addEventListener("dragover", e => { e.preventDefault(); input.classList.add("drag"); });
+  input.addEventListener("dragleave", () => input.classList.remove("drag"));
+  input.addEventListener("drop", async e => {
+    e.preventDefault(); input.classList.remove("drag");
+    for (const f of e.dataTransfer.files) addPaste(await f.text());
+  });
+
+  /* ---- In-page dialog (replaces browser pop-up windows) ---- */
+  function ask({title, text = "", ok = "OK", cancel = "Cancel", danger = false}){
+    return new Promise(resolve => {
+      const prev = document.activeElement;
+      const wrap = document.createElement("div");
+      wrap.className = "dlg-back";
+      wrap.innerHTML = `<div class="dlg" role="dialog" aria-modal="true" aria-labelledby="dlgT">
+        <h3 id="dlgT">${h(title)}</h3>${text ? `<p>${h(text)}</p>` : ""}
+        <div class="dlg-btns"><button class="no">${h(cancel)}</button><button class="yes ${danger ? "red" : "primary"}">${h(ok)}</button></div></div>`;
+      const done = v => { document.removeEventListener("keydown", key, true); wrap.classList.add("out"); setTimeout(() => wrap.remove(), 120); if (prev && prev.focus) prev.focus(); resolve(v); };
+      const key = e => { if (e.key === "Escape"){ e.preventDefault(); done(false); } else if (e.key === "Enter"){ e.preventDefault(); done(true); } };
+      wrap.querySelector(".no").onclick = () => done(false);
+      wrap.querySelector(".yes").onclick = () => done(true);
+      wrap.onclick = e => { if (e.target === wrap) done(false); };
+      document.addEventListener("keydown", key, true);
+      document.body.appendChild(wrap);
+      wrap.querySelector(".yes").focus();
+    });
+  }
+
+  $("fname").value = state.fname;
+  $("fname").oninput = e => { state.fname = e.target.value; save(); };
+  function resetName(){ state.fname = ""; $("fname").value = ""; save(); }
+
+  $("clearBtn").onclick = async () => {
+    if (!state.pastes.length){ toast("Nothing to clear", "", "info"); return; }
+    if (!(await ask({title:"Clear all pastes?", text:`This removes all ${state.pastes.length} pastes so you can start a new bank statement.`, ok:"Clear all", danger:true}))) return;
+    state.pastes = []; save(); resetName(); render(); toast("All pastes cleared", "Ready for a new bank statement.", "info");
+  };
+
+  /* ---- Save folder (remembered between visits) ---- */
+  const canPickFolder = typeof window.showDirectoryPicker === "function";
+  let dirHandle = null;
+  function idb(mode, fn){
+    return new Promise((res, rej) => {
+      const r = indexedDB.open("bankStmtToExcel", 1);
+      r.onupgradeneeded = () => r.result.createObjectStore("kv");
+      r.onerror = () => rej(r.error);
+      r.onsuccess = () => {
+        try {
+          const tx = r.result.transaction("kv", mode), q = fn(tx.objectStore("kv"));
+          const db = r.result;
+          tx.oncomplete = () => { db.close(); res(q && q.result); };
+          tx.onerror = tx.onabort = () => { db.close(); rej(tx.error); };
+        } catch(e){ rej(e); }
+      };
+    });
+  }
+  function showFolder(){
+    const el = $("folderName");
+    if (!canPickFolder){
+      el.textContent = "Downloads folder"; el.className = "fold";
+      $("changeFolder").style.display = "none";
+      $("saveHint").textContent = "This browser can't choose a folder, so files go to your Downloads folder.";
+      return;
+    }
+    el.textContent = dirHandle ? "📁 " + dirHandle.name : "No folder chosen yet";
+    el.className = "fold" + (dirHandle ? "" : " none");
+    $("changeFolder").textContent = dirHandle ? "Change location" : "Choose location";
+    $("saveHint").textContent = dirHandle
+      ? "Files are saved straight into this folder. Use Change location to pick a different one."
+      : "You'll be asked to pick a folder the first time you save. After that, files go there automatically.";
+  }
+  async function pickFolder(){
+    try {
+      const h = await window.showDirectoryPicker({id:"bankStmtExcel", mode:"readwrite"});
+      dirHandle = h; idb("readwrite", s => s.put(h, "dir")).catch(() => {});
+      showFolder(); return h;
+    } catch(e){
+      if (e.name === "AbortError") toast("No folder chosen", "Nothing was changed.", "info");
+      else toast("Couldn't use that folder", e.message, "err");
+      return null;
+    }
+  }
+  async function ensurePermission(h){
+    const opts = {mode:"readwrite"};
+    if ((await h.queryPermission(opts)) === "granted") return true;
+    return (await h.requestPermission(opts)) === "granted";
+  }
+  if (canPickFolder){
+    idb("readonly", s => s.get("dir")).then(h => { if (h){ dirHandle = h; showFolder(); } }).catch(() => {});
+  }
+  showFolder();
+  $("changeFolder").onclick = async () => { if (await pickFolder()) toast("Save location set", `Excel files will be saved in 📁 ${dirHandle.name}`, "ok"); };
+
+  $("dlBtn").onclick = async () => {
+    const {checks, deposits} = buildTables(state.pastes.map(p => p.text));
+    const sheets = [];
+    if (checks.rows.length) sheets.push({name:"Checks and Withdrawals", table:checks});
+    if (deposits.rows.length) sheets.push({name:"Deposits and Sales", table:deposits});
+    if (!sheets.length){ toast("Nothing to save yet", "Paste a Checks or Deposits block first.", "err"); return; }
+    const name = ($("fname").value.trim() || "Bank Statement").replace(/\.xlsx$/i,"").replace(/[\\/:*?"<>|]/g,"-") + ".xlsx";
+    const bytes = buildXlsx(sheets);
+    const counts = `${checks.rows.length} check rows, ${deposits.rows.length} deposit rows`;
+
+    if (!canPickFolder){
+      const blob = new Blob([bytes], {type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});
+      const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = name;
+      document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+      toast("Excel saved", `${name} → Downloads\n${counts}`, "ok", 3000); resetName(); return;
+    }
+
+    const btn = $("dlBtn"), label = btn.textContent;
+    btn.disabled = true; btn.textContent = "Saving…";
+    try {
+      if (!dirHandle && !(await pickFolder())) return;
+      if (!(await ensurePermission(dirHandle))){
+        toast("Folder access not allowed", "Pick the folder again to save.", "err");
+        if (!(await pickFolder())) return;
+      }
+      let exists = true;
+      try { await dirHandle.getFileHandle(name); } catch(e){ exists = false; }
+      if (exists && !(await ask({title:"Replace existing file?", text:`"${name}" is already in ${dirHandle.name}. Replace it with this one?`, ok:"Replace", danger:true}))){
+        toast("Save cancelled", "The existing file was kept. Change the file name to save a new copy.", "info"); return;
+      }
+      const fh = await dirHandle.getFileHandle(name, {create:true});
+      const w = await fh.createWritable(); await w.write(bytes); await w.close();
+      toast(exists ? "Excel replaced" : "Excel saved", `${name} → 📁 ${dirHandle.name}\n${counts}`, "ok", 3000);
+      resetName();
+      btn.classList.add("done"); setTimeout(() => btn.classList.remove("done"), 1500);
+    } catch(e){
+      toast("Couldn't save the file", e.message + " Try Change location.", "err");
+    } finally {
+      btn.textContent = label; btn.disabled = false;
+    }
+  };
+
+  function render(){
+    const analyses = state.pastes.map(p => analyzePaste(p.text));
+    $("pasteCount").textContent = state.pastes.length;
+
+    // month overview data
+    const months = {};
+    analyses.forEach((info, pi) => info.forEach(i => i.months.forEach(m => {
+      months[m] = months[m] || {checks:[], deposits:[]};
+      months[m][i.type].push(pi+1);
+    })));
+    const keys = Object.keys(months).sort();
+    $("monthSummary").textContent = keys.length ? keys.map(monthShort).join(", ") : "None yet";
+
+    // paste list
+    const seen = {};
+    $("pasteList").innerHTML = state.pastes.length ? analyses.map((info, pi) => {
+      const lines = info.map(i => {
+        const dupKey = i.type + "|" + i.months.join(",");
+        const dup = seen[dupKey]; if (!dup) seen[dupKey] = pi+1;
+        return `<div class="title"><span class="tag ${i.type}">${i.type === "checks" ? "Checks" : "Deposits"}</span>${h(i.months.length ? i.months.map(monthLabel).join(", ") : "Unknown month")}${dup ? ` <span class="tag dup">same as #${dup}</span>` : ""}</div>
+          <div class="meta">${i.rows} rows · total ${fmt(i.total)}</div>`;
+      }).join("");
+      return `<div class="item"><div class="num">#${pi+1}</div><div class="body">${lines}</div><button class="x" title="Remove this paste" data-i="${pi}">×</button></div>`;
+    }).join("") : `<div class="empty">No pastes yet.</div>`;
+    $("pasteList").querySelectorAll(".x").forEach(b => b.onclick = async () => {
+      const i = +b.dataset.i;
+      if (!(await ask({title:`Remove paste #${i+1}?`, ok:"Remove", danger:true}))) return;
+      state.pastes.splice(i,1); save(); render(); toast(`Paste #${i+1} removed`, "", "info");
+    });
+
+    // month table
+    $("monthTable").innerHTML = keys.length ? `<table class="mo"><tr><th>Month</th><th class="c">Checks &amp; Withdrawals</th><th class="c">Deposits &amp; Sales</th></tr>` +
+      keys.map(k => {
+        const cell = arr => arr.length ? `<span class="yes">✓</span> <span class="hint">paste #${arr.join(", #")}</span>` : `<span class="no">— not pasted</span>`;
+        return `<tr><td><b>${h(monthLabel(k))}</b></td><td class="c">${cell(months[k].checks)}</td><td class="c">${cell(months[k].deposits)}</td></tr>`;
+      }).join("") + `</table>` : `<div class="empty">Months will show here as you paste.</div>`;
+
+    // preview
+    const {checks, deposits, warnings} = buildTables(state.pastes.map(p => p.text));
+    const tabs = {checks:["Checks and Withdrawals", checks], deposits:["Deposits and Sales", deposits]};
+    $("tabs").innerHTML = Object.entries(tabs).map(([k,[n,t]]) => `<button data-t="${k}" class="${state.tab===k?"on":""}">${n} (${t.rows.length})</button>`).join("");
+    $("tabs").querySelectorAll("button").forEach(b => b.onclick = () => { state.tab = b.dataset.t; save(); render(); });
+    const t = tabs[state.tab][1];
+    if (!t.rows.length) $("preview").innerHTML = `<div class="empty" style="padding:12px">No rows on this sheet yet.</div>`;
+    else {
+      const ai = t.header.indexOf("Amount"); let tot = 0;
+      const body = t.rows.map(r => `<tr>${r.map((v,c) => {
+        if (c === ai){ const n = toNumber(v); if (n !== null){ tot += n; return `<td class="amt">${fmt(n)}</td>`; } }
+        return `<td>${h(v)}</td>`;
+      }).join("")}</tr>`).join("");
+      const totalRow = ai >= 0 ? `<tr class="total">${t.header.map((_,c) => c === 0 ? `<td>Total</td>` : c === ai ? `<td class="amt">${fmt(tot)}</td>` : `<td></td>`).join("")}</tr>` : "";
+      $("preview").innerHTML = `<table><thead><tr>${t.header.map(x => `<th>${h(x)}</th>`).join("")}</tr></thead><tbody>${body}${totalRow}</tbody></table>`;
+    }
+    $("warns").textContent = warnings.length ? "Warnings:\n" + warnings.join("\n") : "";
+    $("dlBtn").disabled = !(checks.rows.length || deposits.rows.length);
+  }
+
+  render();
+})();
+</script>
+</body>
+</html>
