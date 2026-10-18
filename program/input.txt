@@ -1,0 +1,291 @@
+Date,Payee,Memo,Number,Amount,Account
+01/02/25,Coulson Oil Purchase,EFT,,10867.98,Fuel Purchase
+01/02/25,,EFT,,4566.98,Return Item (Other Income)
+01/03/25,MERCHANT BNKCD,EFT,,1871.82,Credit Card Sales
+01/03/25,Security Central,EFT,,38.33,Security Expense
+01/06/25,Khatri Enterprises,EFT,,2500.0,Loan from Khatri Enterprises
+01/06/25,,EFT,,3180.15,Ask My Accountant
+01/06/25,,EFT,,159.0,Ask My Accountant
+01/07/25,Coulson Oil Purchase,EFT,,10536.64,Fuel Purchase
+01/07/25,,EFT,,4566.98,Return Item (Other Income)
+01/07/25,Waste Management,EFT,,500.0,Trash Expense
+01/07/25,Liberty,EFT,,229.08,Insurance Expense
+01/09/25,,EFT,,700.0,Owner Distributions
+01/09/25,Ar Lottery,EFT,,3603.02,Lotto Payable
+01/10/25,,EFT,,3370.06,Return Item (Other Income)
+01/10/25,Entergy,EFT,,1.0,Utilities
+01/13/25,,EFT,,4323.53,Return Item (Other Income)
+01/13/25,,EFT,,2726.01,Ask My Accountant
+01/14/25,Ritter Communications,EFT,,388.94,Computer and Internet Expenses
+01/15/25,IRS,EFT,,1283.34,Payroll Tax
+01/15/25,IRS,EFT,,22.49,Payroll Tax
+01/16/25,,EFT,,3370.06,Return Item (Other Income)
+01/16/25,,EFT,,2522.37,Return Item (Other Income)
+01/16/25,AR DFA Revenue,EFT,,123.54,Sales Tax Payable
+01/17/25,,EFT,,4774.89,Return Item (Other Income)
+01/17/25,,EFT,,3861.65,Return Item (Other Income)
+01/21/25,IK Accounting,EFT,,200.0,Professional Fees
+01/22/25,,EFT,,8000.0,Ask My Accountant
+01/22/25,AR DFA Revenue,EFT,,1349.0,Sales Tax Payable
+01/27/25,,EFT,,155.0,Owner Distributions
+01/28/25,,EFT,,300.0,Return Item (Other Income)
+01/29/25,,EFT,,3836.87,Return Item (Other Income)
+01/13/25,,check,1155,1662.2,Ask My Accountant
+01/29/25,,check,1156,211.39,Return Item (Other Income)
+01/31/25,,check,1156,211.39,Return Item (Other Income)
+01/16/25,,check,1157,748.74,Ask My Accountant
+01/27/25,,check,1158,320.51,Ask My Accountant
+01/14/25,,check,1159,389.24,Ask My Accountant
+01/16/25,,check,1160,714.12,Ask My Accountant
+01/23/25,,check,1161,281.0,Ask My Accountant
+01/31/25,,check,1162,173.16,Ask My Accountant
+01/28/25,,check,1163,1215.95,Return Item (Other Income)
+01/29/25,,check,1163,1215.95,Return Item (Other Income)
+01/08/25,,check,1383,350.0,Ask My Accountant
+01/13/25,,check,1474,121.84,Ask My Accountant
+01/07/25,,check,1488,205.26,Ask My Accountant
+01/06/25,,check,1489,86.73,Ask My Accountant
+01/02/25,,check,1490,1623.37,Ask My Accountant
+01/13/25,,check,1492,454.46,Ask My Accountant
+01/10/25,,check,1493,160.39,Ask My Accountant
+01/02/25,,check,1495,666.24,Ask My Accountant
+01/06/25,,check,1496,712.02,Ask My Accountant
+01/06/25,,check,1497,217.12,Ask My Accountant
+01/21/25,,check,1498,513.24,Ask My Accountant
+01/21/25,,check,1499,139.42,Ask My Accountant
+01/27/25,,check,1500,247.73,Return Item (Other Income)
+01/29/25,,check,1501,810.52,Return Item (Other Income)
+01/02/25,Bank of America,EFT,,16.5,Bank Service Charges
+01/22/25,Bank of America,EFT,,30.0,Bank Service Charges
+01/27/25,Bank of America,EFT,,10.0,Bank Service Charges
+01/31/25,Bank of America,EFT,,10.0,Bank Service Charges
+02/04/25,,EFT,,159.0,Return Item (Other Income)
+02/04/25,,EFT,,38.33,Return Item (Other Income)
+02/05/25,,EFT,,3191.86,Return Item (Other Income)
+02/06/25,,EFT,,234.08,Return Item (Other Income)
+02/13/25,,EFT,,2133.96,Return Item (Other Income)
+02/13/25,,EFT,,1.0,Return Item (Other Income)
+02/14/25,,EFT,,861.18,Return Item (Other Income)
+02/14/25,,EFT,,164.17,Return Item (Other Income)
+02/14/25,,EFT,,29.02,Return Item (Other Income)
+02/18/25,,EFT,,200.0,Return Item (Other Income)
+02/18/25,,EFT,,80.15,Return Item (Other Income)
+02/20/25,,EFT,,2133.96,Return Item (Other Income)
+02/20/25,,EFT,,1.0,Return Item (Other Income)
+02/21/25,,EFT,,1209.0,Return Item (Other Income)
+02/26/25,,EFT,,2133.96,Return Item (Other Income)
+02/26/25,,EFT,,1.0,Return Item (Other Income)
+02/04/25,,check,1162,173.16,Return Item (Other Income)
+02/10/25,,check,1502,59.05,Return Item (Other Income)
+02/12/25,,check,1502,59.05,Return Item (Other Income)
+02/04/25,,check,1503,1700.0,Return Item (Other Income)
+02/05/25,,check,1504,170.84,Return Item (Other Income)
+02/07/25,,check,1504,170.84,Return Item (Other Income)
+02/03/25,Bank of America,EFT,,75.9,Bank Service Charges
+03/04/25,,EFT,,106.66,Return Item (Other Income)
+03/05/25,,EFT,,500.0,Return Item (Other Income)
+03/06/25,,EFT,,193.16,Return Item (Other Income)
+03/14/25,,EFT,,801.54,Return Item (Other Income)
+03/14/25,IRS,EFT,,164.38,Payroll Tax
+03/14/25,IRS,EFT,,26.77,Payroll Tax
+03/14/25,,EFT,,5.27,Return Item (Other Income)
+03/17/25,,EFT,,200.0,Return Item (Other Income)
+03/17/25,,EFT,,88.34,Return Item (Other Income)
+03/17/25,,EFT,,14.81,Return Item (Other Income)
+04/10/25,,EFT,,427.66,Return Item (Other Income)
+04/15/25,,EFT,,620.28,Return Item (Other Income)
+04/15/25,IRS,EFT,,20.95,Payroll Tax
+04/16/25,AR DFA Revenue,EFT,,60.65,Sales Tax Payable
+04/17/25,,EFT,,427.66,Return Item (Other Income)
+04/21/25,,EFT,,250.0,Owner Distributions
+04/21/25,,EFT,,740.0,Owner Distributions
+04/25/25,,EFT,,60.0,Return Item (Other Income)
+04/11/25,Entergy,EFT,,1001.6,Utilities
+04/11/25,Entergy,EFT,,998.6,Utilities
+04/11/25,Entergy,EFT,,501.6,Utilities
+05/09/25,Khatri Enterprises,EFT,,850.0,Loan from Khatri Enterprises
+05/09/25,,EFT,,300.0,Owner Distributions
+05/15/25,IRS,EFT,,261.12,Payroll Tax
+05/15/25,IRS,EFT,,8.95,Payroll Tax
+05/16/25,,EFT,,21.93,Return Item (Other Income)
+05/07/25,,EFT,,20.0,Travel Expense
+05/08/25,,EFT,,10.48,Travel Expense
+05/08/25,,EFT,,11.0,Travel Expense
+05/08/25,,EFT,,20.0,Travel Expense
+05/08/25,,EFT,,6.04,Ask My Accountant
+05/08/25,,EFT,,34.32,Travel Expense
+05/09/25,,EFT,,12.44,Owner Distributions
+05/09/25,,EFT,,32.96,Ask My Accountant
+05/12/25,Entergy,EFT,,999.6,Utilities
+05/13/25,,EFT,,12.45,Owner Distributions
+05/27/25,,EFT,,601.15,Ask My Accountant
+06/06/25,,EFT,,817.5,Return Item (Other Income)
+06/13/25,IRS,EFT,,363.92,Payroll Tax
+06/13/25,IRS,EFT,,11.37,Payroll Tax
+06/16/25,AR DFA Revenue,EFT,,35.31,Sales Tax Payable
+06/23/25,,check,1506,832.35,Return Item (Other Income)
+06/23/25,,check,1507,149.99,Return Item (Other Income)
+06/27/25,,check,1507,149.99,Return Item (Other Income)
+06/16/25,Bank of America,EFT,,10.0,Bank Service Charges
+07/14/25,AR.gov,EFT,,415.28,Payroll Tax
+07/15/25,,EFT,,611.72,Return Item (Other Income)
+07/15/25,,EFT,,6.51,Return Item (Other Income)
+07/16/25,,EFT,,55.04,Return Item (Other Income)
+07/01/25,Bank of America,EFT,,29.95,Bank Service Charges
+07/14/25,Bank of America,EFT,,10.0,Bank Service Charges
+08/26/25,,EFT,,170.0,Owner Distributions
+08/01/25,Bank of America,EFT,,29.95,Bank Service Charges
+09/18/25,Sam's Club,EFT,,110.0,Membership Fee
+09/02/25,Bank of America,EFT,,29.95,Bank Service Charges
+10/01/25,Bank of America,EFT,,29.95,Bank Service Charges
+11/03/25,Bank of America,EFT,,29.95,Bank Service Charges
+12/01/25,Bank of America,EFT,,29.95,Bank Service Charges
+
+
+Date,Received From,Memo,Check No.,Amount,Account From
+01/02/25,Khatri Enterprises,EFT,,5400.0,Loan from Khatri Enterprises
+01/02/25,Counter Credit,EFT,,2832.0,Income
+01/02/25,MERCHANT BNKCD,EFT,,1274.64,Credit Card Sales
+01/02/25,Counter Credit,EFT,,1216.0,Income
+01/02/25,MERCHANT BNKCD,EFT,,1191.36,Credit Card Sales
+01/03/25,,EFT,,4566.98,Return Item (Other Income)
+01/03/25,MERCHANT BNKCD,EFT,,1721.13,Credit Card Sales
+01/03/25,Counter Credit,EFT,,1030.0,Income
+01/03/25,NJOY LLC,EFT,,50.0,NJOY Income
+01/06/25,Counter Credit,EFT,,4706.0,Income
+01/06/25,MERCHANT BNKCD,EFT,,1698.72,Credit Card Sales
+01/06/25,MERCHANT BNKCD,EFT,,1675.43,Credit Card Sales
+01/06/25,MERCHANT BNKCD,EFT,,1605.12,Credit Card Sales
+01/07/25,Khatri Enterprises,EFT,,8675.0,Loan from Khatri Enterprises
+01/07/25,Counter Credit,EFT,,1371.0,Income
+01/07/25,MERCHANT BNKCD,EFT,,1134.42,Credit Card Sales
+01/08/25,MERCHANT BNKCD,EFT,,1476.07,Credit Card Sales
+01/09/25,MERCHANT BNKCD,EFT,,1992.6,Credit Card Sales
+01/09/25,ITG BRANDS LLC,EFT,,42.4,ITG Brands
+01/10/25,MERCHANT BNKCD,EFT,,2058.59,Credit Card Sales
+01/13/25,,EFT,,3370.06,Return Item (Other Income)
+01/13/25,Counter Credit,EFT,,1906.0,Income
+01/13/25,MERCHANT BNKCD,EFT,,1121.38,Credit Card Sales
+01/13/25,MERCHANT BNKCD,EFT,,1006.96,Credit Card Sales
+01/14/25,,EFT,,4323.53,Return Item (Other Income)
+01/14/25,MERCHANT BNKCD,EFT,,1546.43,Credit Card Sales
+01/15/25,MERCHANT BNKCD,EFT,,1715.67,Credit Card Sales
+01/15/25,Counter Credit,EFT,,1086.0,Income
+01/16/25,MERCHANT BNKCD,EFT,,1744.59,Credit Card Sales
+01/16/25,Counter Credit,EFT,,900.0,Income
+01/16/25,PM USA INC,EFT,,192.5,PM USA
+01/16/25,ITG BRANDS LLC,EFT,,5.0,ITG Brands
+01/17/25,,EFT,,2522.37,Return Item (Other Income)
+01/17/25,MERCHANT BNKCD,EFT,,1994.88,Credit Card Sales
+01/21/25,,EFT,,4774.89,Return Item (Other Income)
+01/21/25,,EFT,,3861.65,Return Item (Other Income)
+01/21/25,MERCHANT BNKCD,EFT,,1671.75,Credit Card Sales
+01/21/25,MERCHANT BNKCD,EFT,,1565.15,Credit Card Sales
+01/21/25,MERCHANT BNKCD,EFT,,1545.52,Credit Card Sales
+01/21/25,MERCHANT BNKCD,EFT,,1535.06,Credit Card Sales
+01/22/25,MERCHANT BNKCD,EFT,,1399.57,Credit Card Sales
+01/24/25,ITG BRANDS LLC,EFT,,34.6,ITG Brands
+01/28/25,,EFT,,247.73,Return Item (Other Income)
+01/29/25,,EFT,,1215.95,Return Item (Other Income)
+01/29/25,,EFT,,300.0,Return Item (Other Income)
+01/30/25,,EFT,,3836.87,Return Item (Other Income)
+01/30/25,,EFT,,1215.95,Return Item (Other Income)
+01/30/25,,EFT,,810.52,Return Item (Other Income)
+01/30/25,,EFT,,211.39,Return Item (Other Income)
+01/30/25,NJOY LLC,EFT,,50.0,NJOY Income
+01/31/25,PM USA INC,EFT,,53.0,PM USA
+01/31/25,ALG DISTR COMP 1,EFT,,11.15,Other Income
+02/03/25,,EFT,,173.16,Return Item (Other Income)
+02/05/25,,EFT,,1700.0,Return Item (Other Income)
+02/05/25,,EFT,,173.16,Return Item (Other Income)
+02/05/25,,EFT,,159.0,Return Item (Other Income)
+02/05/25,,EFT,,38.33,Return Item (Other Income)
+02/06/25,,EFT,,3191.86,Return Item (Other Income)
+02/06/25,,EFT,,170.84,Return Item (Other Income)
+02/07/25,,EFT,,234.08,Return Item (Other Income)
+02/10/25,,EFT,,170.84,Return Item (Other Income)
+02/11/25,,EFT,,59.05,Return Item (Other Income)
+02/13/25,,EFT,,59.05,Return Item (Other Income)
+02/14/25,,EFT,,2133.96,Return Item (Other Income)
+02/14/25,,EFT,,1.0,Return Item (Other Income)
+02/14/25,PM USA INC,EFT,,169.0,PM USA
+02/18/25,,EFT,,861.18,Return Item (Other Income)
+02/18/25,,EFT,,164.17,Return Item (Other Income)
+02/18/25,,EFT,,29.02,Return Item (Other Income)
+02/19/25,,EFT,,200.0,Return Item (Other Income)
+02/19/25,,EFT,,80.15,Return Item (Other Income)
+02/21/25,,EFT,,2133.96,Return Item (Other Income)
+02/21/25,,EFT,,1.0,Return Item (Other Income)
+02/21/25,ITG BRANDS LLC,EFT,,61.0,ITG Brands
+02/24/25,,EFT,,1209.0,Return Item (Other Income)
+02/25/25,PM USA INC,EFT,,11.68,PM USA
+02/25/25,John Middleton,EFT,,1.25,Other Income
+02/27/25,,EFT,,2133.96,Return Item (Other Income)
+02/27/25,,EFT,,1.0,Return Item (Other Income)
+02/27/25,PM USA INC,EFT,,15.2,PM USA
+02/28/25,NJOY LLC,EFT,,50.0,NJOY Income
+03/03/25,ALG DISTR COMP 1,EFT,,7.75,Other Income
+03/05/25,,EFT,,106.66,Return Item (Other Income)
+03/06/25,,EFT,,500.0,Return Item (Other Income)
+03/07/25,,EFT,,193.16,Return Item (Other Income)
+03/13/25,PM USA INC,EFT,,172.8,PM USA
+03/17/25,,EFT,,801.54,Return Item (Other Income)
+03/17/25,,EFT,,5.27,Return Item (Other Income)
+03/18/25,,EFT,,200.0,Return Item (Other Income)
+03/18/25,,EFT,,88.34,Return Item (Other Income)
+03/18/25,,EFT,,14.81,Return Item (Other Income)
+04/02/25,NJOY LLC,EFT,,50.0,NJOY Income
+04/03/25,ITG BRANDS LLC,EFT,,112.4,ITG Brands
+04/03/25,ALG DISTR COMP 1,EFT,,8.37,Other Income
+04/03/25,PM USA INC,EFT,,2.0,PM USA
+04/09/25,Counter Credit,EFT,,2500.0,Income
+04/11/25,,EFT,,427.66,Return Item (Other Income)
+04/16/25,,EFT,,620.28,Return Item (Other Income)
+04/17/25,PM USA INC,EFT,,174.3,PM USA
+04/18/25,,EFT,,427.66,Return Item (Other Income)
+04/21/25,Counter Credit,EFT,,740.0,Income
+04/28/25,,EFT,,60.0,Return Item (Other Income)
+05/02/25,NJOY LLC,EFT,,50.0,NJOY Income
+05/05/25,Arkansas Business Alliance,EFT,,893.15,Other Income
+05/05/25,ALG DISTR COMP 1,EFT,,10.76,Other Income
+05/09/25,Khatri Enterprises,EFT,,1300.0,Loan from Khatri Enterprises
+05/09/25,ALG DISTR COMP 1,EFT,,33.12,Other Income
+05/12/25,Khatri Enterprises,EFT,,50.0,Loan from Khatri Enterprises
+05/15/25,PM USA INC,EFT,,243.7,PM USA
+05/19/25,,EFT,,21.93,Return Item (Other Income)
+05/23/25,,EFT,,600.0,Owner Distributions
+05/30/25,NJOY LLC,EFT,,50.0,NJOY Income
+05/30/25,PM USA INC,EFT,,34.7,PM USA
+06/02/25,ALG DISTR COMP 1,EFT,,9.37,Other Income
+06/09/25,,EFT,,817.5,Return Item (Other Income)
+06/12/25,PM USA INC,EFT,,262.4,PM USA
+06/12/25,ITG BRANDS LLC,EFT,,32.6,ITG Brands
+06/24/25,,EFT,,832.35,Return Item (Other Income)
+06/24/25,,EFT,,149.99,Return Item (Other Income)
+06/26/25,ITG BRANDS LLC,EFT,,5.55,ITG Brands
+06/30/25,,EFT,,149.99,Return Item (Other Income)
+07/07/25,NJOY LLC,EFT,,50.0,NJOY Income
+07/08/25,ALG DISTR COMP 1,EFT,,9.57,Other Income
+07/10/25,ITG BRANDS LLC,EFT,,95.6,ITG Brands
+07/16/25,,EFT,,611.72,Return Item (Other Income)
+07/16/25,,EFT,,6.51,Return Item (Other Income)
+07/17/25,,EFT,,55.04,Return Item (Other Income)
+07/18/25,PM USA INC,EFT,,288.5,PM USA
+08/01/25,NJOY LLC,EFT,,50.0,NJOY Income
+08/04/25,ALG DISTR COMP 1,EFT,,9.72,Other Income
+08/05/25,ALG DISTR COMP 1,EFT,,31.34,Other Income
+08/07/25,ITG BRANDS LLC,EFT,,31.6,ITG Brands
+08/14/25,PM USA INC,EFT,,102.6,PM USA
+09/02/25,NJOY LLC,EFT,,50.0,NJOY Income
+09/03/25,PM USA INC,EFT,,14.7,PM USA
+09/03/25,ALG DISTR COMP 1,EFT,,6.88,Other Income
+09/05/25,ITG BRANDS LLC,EFT,,12.0,ITG Brands
+09/10/25,Arkansas Business Alliance,EFT,,515.0,Other Income
+09/12/25,,EFT,,270.22,Other Income
+10/02/25,NJOY LLC,EFT,,50.0,NJOY Income
+10/03/25,ALG DISTR COMP 1,EFT,,6.93,Other Income
+10/03/25,ITG BRANDS LLC,EFT,,5.5,ITG Brands
+10/06/25,,EFT,,542.12,Other Income
+10/31/25,ITG BRANDS LLC,EFT,,155.0,ITG Brands
+11/20/25,PM USA INC,EFT,,1.92,PM USA
+12/30/25,,EFT,,274.36,Other Income
